@@ -1,33 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
+import { EmployeeResponse, getAllEmployees } from './services/EmployeeServices'
+import EmployeeCard from './components/EmployeeCard/EmployeeCard';
+import Counter from './features/counter/Counter';
+import Queries from './features/queries/Queries';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import EmployeeForm from './components/EmployeeForm/EmployeeForm';
+import { EmployeeFormData } from './components/EmployeeForm/schema';
 
 function App() {
-  const [count, setCount] = useState(0)
+// const [employees, setEmployees] = useState<EmployeeResponse[]>([]);
+
+// useEffect(() => {
+//   getAllEmployees().then((data) => setEmployees(data)).catch((e) => console.log(e));
+// },[]);
+
+// console.log(employees);
+
+const onSubmit = async (data: EmployeeFormData) => {
+  console.log(data);
+}
+
+const queryClient = new QueryClient();
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <QueryClientProvider client={queryClient}>
+    <h1>Hello</h1>
+    <EmployeeForm onSubmit={onSubmit}/>
+    {/* {employees.map((employee) => <EmployeeCard key={employee.id} employee={employee} />)} */}
+    <Queries/>
+    <Counter/>
+    </QueryClientProvider>
     </>
   )
 }

@@ -70,6 +70,12 @@ public class Employee {
     private double weeklyHours;
 
     @Column
+    private String employeeUser;
+
+    @Column
+    private String employeeEmail;
+
+    @Column
     private Boolean isArchived;
 
     public Long getId() {
@@ -216,13 +222,20 @@ public class Employee {
         this.isArchived = isArchived;
     }
 
-    @Override
-    public String toString() {
-        return "Employee [id=" + id + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName="
-                + lastName + ", gender=" + gender + ", birthDate=" + birthDate + ", email=" + email + ", mobile=" + mobile + ", street=" + street + ", suburb=" + suburb + ", state=" + state
-                + ", postCode=" + postCode + ", isPermanent=" + isPermanent + ", isFullTime=" + isFullTime
-                + ", startDate=" + startDate + ", finishDate=" + finishDate + ", weeklyHours=" + weeklyHours
-                + ", isArchived=" + isArchived + "]";
-    } 
+    public String getEmployeeUser() {
+        return employeeUser;
+    }
+
+    public void setEmployeeUser(String employeeUser) {
+        this.employeeUser = employeeUser;
+    }
+
+    public String getEmployeeEmail() {
+        return employeeEmail;
+    }
+
+    public void setEmployeeEmail() {
+        this.employeeEmail = this.employeeUser + "@company.com";
+    }
 
 }

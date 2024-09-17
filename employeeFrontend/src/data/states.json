@@ -1,0 +1,12 @@
+{
+    "states": [
+      { "name": "New South Wales", "stateCode": "NSW" },
+      { "name": "Victoria", "stateCode": "VIC" },
+      { "name": "Queensland", "stateCode": "QLD" },
+      { "name": "South Australia", "stateCode": "SA" },
+      { "name": "Western Australia", "stateCode": "WA" },
+      { "name": "Tasmania", "stateCode": "TAS" },
+      { "name": "Northern Territory", "stateCode": "NT" },
+      { "name": "Australian Capital Territory", "stateCode": "ACT" }
+    ]
+}
