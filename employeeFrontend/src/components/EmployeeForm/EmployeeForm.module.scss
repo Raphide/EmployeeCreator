@@ -1,0 +1,52 @@
+form{
+    width: 70vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.input{
+    display: flex;
+    flex-direction: column;
+
+    width: 70%;
+    label{
+        text-align: start;
+        color: #006064;
+        font-size: 1.25em;
+    }
+    input, select{
+        height: 2em;
+    }
+}
+
+.section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:80%;
+    border: 2px, solid #006064;
+    border-radius: 15px;
+    padding: 1em;
+    legend{
+        color: #006064;
+        text-align: start;
+        font-size: 1.25em;
+        font-weight: 600;
+    }
+}
+
+small{
+    color: red;
+}
+
+button{
+    margin-top: 1em;
+    background-color: #0288D1;
+    color: #ffffff;
+    &:active{
+        background-color: #01579B;
+    }
+}

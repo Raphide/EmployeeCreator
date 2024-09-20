@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Limit;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +39,16 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> findAllEmployees(){
         List<Employee> employees = this.employeeService.findAll();
         return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
+    }
+
+    @GetMapping("/page={page}")
+    public ResponseEntity<Page<Employee>> getPagedEmployees(@PathVariable int page) throws NotFoundException{
+        Pageable paging = PageRequest.of(page, 10);
+        Page<Employee> employees = this.employeeService.findByPage(paging);
+        if(employees.isEmpty()){
+            throw new NotFoundException("No more results");
+        }
+        return new ResponseEntity<Page<Employee>>(employees, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

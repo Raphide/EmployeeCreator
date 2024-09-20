@@ -1,6 +1,19 @@
-.card {
-  p {
-    align-self: center;
-  
+.base{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid #006064;
+  width: 70vw;
+  .card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+ width: 60%;
+    p {
+      align-self: center;
+    
+    }
   }
 }
+
+

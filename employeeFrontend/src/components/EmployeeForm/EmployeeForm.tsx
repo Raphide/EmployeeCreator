@@ -61,7 +61,8 @@ const EmployeeForm = ({
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}><fieldset className={styles.section}>
+        <legend>Employee Details</legend>
         <div className={styles.input}>
           <label htmlFor="firstName">First Name</label>
           <input id="firstName" type="text" {...register("firstName")} />
@@ -141,6 +142,8 @@ const EmployeeForm = ({
           <input id="postCode" type="text" {...register("postCode")} />
           {errors?.postCode && <small>{errors.postCode.message}</small>}
         </div>
+        </fieldset><fieldset className={styles.section}>
+          <legend>Employment details</legend>
         <div className={styles.input}>
           <label>Contract</label>
           <span>
@@ -180,7 +183,7 @@ const EmployeeForm = ({
             {...register("weeklyHours", { valueAsNumber: true })}
           />
           {errors?.weeklyHours && <small>{errors.weeklyHours.message}</small>}
-        </div>
+        </div></fieldset>
         <button>{formType === "CREATE" ? "Create" : "Edit"} Employee</button>
       </form>
     </div>

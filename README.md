@@ -30,7 +30,7 @@
 ## Features
 
 -   This is still unfinished but so far the back end basics are done (Database and REST API functionality is there).
-- Front end can GET and display all employees in the database and a form to enter employees has been built but has not been implemented yet.
+- Front end can GET and display all employees in the database and a form to POST employees has been implemented.
 
 ---
 
@@ -48,6 +48,15 @@
 ---
 
 ## Change logs
+
+### 20/09/2024 - First Changelog
+
+- Started Styling in the front end
+- Have added a search bar
+- Changed the rendering of the employees on the EmployeePage to be within a table rather than as cards
+- Added individual employee profile pages
+
+
 
 ### 18/09/2024 - First Changelog
 

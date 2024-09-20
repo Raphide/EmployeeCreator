@@ -18,7 +18,7 @@ export const schema = z.object({
   isFullTime: z.boolean(),
   startDate: z.string(),
   finishDate: z.string(),
-  weeklyHours: z.number().min(10),
+  weeklyHours: z.number().min(10, "minimum weekly hours is 10").max(40, "cannot exceed 40 weekly hours"),
 });
 
 export type EmployeeFormData = z.infer<typeof schema>;

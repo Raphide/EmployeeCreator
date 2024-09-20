@@ -1,39 +1,40 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-import { EmployeeResponse, getAllEmployees } from './services/EmployeeServices'
-import EmployeeCard from './components/EmployeeCard/EmployeeCard';
-import Counter from './features/counter/Counter';
-import Queries from './features/queries/Queries';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import EmployeeForm from './components/EmployeeForm/EmployeeForm';
-import { EmployeeFormData } from './components/EmployeeForm/schema';
+import { useEffect, useState } from "react";
+import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import HomePage from "./pages/HomePage/HomePage";
+import EmployeePage from "./pages/EmployeePage/EmployeePage";
+import CreateEmployeePage from "./pages/CreateEmployeePage/CreateEmployeePage";
+import NavBar from "./components/NavBar/NavBar";
+import EmployeeInfoPage from "./pages/EmployeeInfoPage/EmployeeInfoPage";
 
 function App() {
-// const [employees, setEmployees] = useState<EmployeeResponse[]>([]);
+  // const [employees, setEmployees] = useState<EmployeeResponse[]>([]);
 
-// useEffect(() => {
-//   getAllEmployees().then((data) => setEmployees(data)).catch((e) => console.log(e));
-// },[]);
+  // useEffect(() => {
+  //   getAllEmployees().then((data) => setEmployees(data)).catch((e) => console.log(e));
+  // },[]);
 
-// console.log(employees);
+  // console.log(employees);
 
-const onSubmit = async (data: EmployeeFormData) => {
-  console.log(data);
-}
-
-const queryClient = new QueryClient();
+  const queryClient = new QueryClient();
 
   return (
     <>
-    <QueryClientProvider client={queryClient}>
-    <h1>Hello</h1>
-    <EmployeeForm onSubmit={onSubmit}/>
-    {/* {employees.map((employee) => <EmployeeCard key={employee.id} employee={employee} />)} */}
-    <Queries/>
-    <Counter/>
-    </QueryClientProvider>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <NavBar/>
+          {/* <div className="buffer"></div> */}
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/employees" element={<EmployeePage />} />
+            <Route path="/employees/create" element={<CreateEmployeePage />} />
+            <Route path="/employees/:id" element={<EmployeeInfoPage/>}/>
+          </Routes>
+        </QueryClientProvider>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

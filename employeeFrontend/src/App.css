@@ -1,9 +1,11 @@
 #root {
   max-width: 1280px;
+  min-width: 900px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 0 2rem 2rem 2rem;
   white-space: pre;
+  background-color: white;
+  min-height: 100vh;
 }
 
 .logo {
@@ -45,4 +47,8 @@
 span{
   display: flex;
   flex-direction: row;
+}
+
+.buffer{
+  height: 150px;
 }

@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.Valid;
@@ -64,6 +66,10 @@ public class EmployeeService {
     return this.repo.findAll();
   }
 
+  public Page<Employee> findByPage(Pageable paging) {
+   return this.repo.findAll(paging);
+  }
+
   public Optional<Employee> findById(Long id) {
     return this.repo.findById(id);
   }
@@ -98,5 +104,7 @@ public class EmployeeService {
     Employee updatedEmployee = this.repo.save(foundEmployee);
     return Optional.of(updatedEmployee);
   }
+
+
 
 }
