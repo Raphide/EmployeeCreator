@@ -42,7 +42,7 @@ public class EmployeeService {
     Employee newEmployee = mapper.map(data, Employee.class);
     int fnLength = data.getFirstName().length() >= 3 ? 3 : 2;
     int lnLength = data.getLastName().length() >= 3 ? 3 : 2;
-    String newUser = data.getFirstName().substring(0, fnLength) + data.getLastName().substring(0, lnLength);
+    String newUser = data.getFirstName().replaceAll("[^a-zA-Z]", "").substring(0, fnLength).toLowerCase() + data.getLastName().replaceAll("[^a-zA-Z]", "").substring(0, lnLength).toLowerCase();
     if (repo.existsByEmployeeUser(newUser)) {
       int number = 1;
       String idString = Integer.toString(number);

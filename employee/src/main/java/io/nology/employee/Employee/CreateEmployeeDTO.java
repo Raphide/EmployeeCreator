@@ -58,7 +58,7 @@ public class CreateEmployeeDTO {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = firstName.substring(0,1).toUpperCase()+firstName.substring(1);
     }
 
     public String getMiddleName() {
@@ -66,7 +66,7 @@ public class CreateEmployeeDTO {
     }
 
     public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+        this.middleName = middleName == "" ? middleName : middleName.substring(0,1).toUpperCase()+middleName.substring(1);
     }
 
     public String getLastName() {
@@ -74,7 +74,7 @@ public class CreateEmployeeDTO {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = lastName.substring(0,1).toUpperCase()+lastName.substring(1);
     }
 
     public String getGender() {

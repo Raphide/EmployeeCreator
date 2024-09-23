@@ -3,5 +3,21 @@
       align-self: center;
     
     }
+    button{
+      margin-right: 1em;
+    }
   }
-  
+  .contents{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width:800px;
+
+    span{
+     line-height: 0.2;
+    }
+    .buffer{
+      height: 1.1em;
+    }
+  }
+

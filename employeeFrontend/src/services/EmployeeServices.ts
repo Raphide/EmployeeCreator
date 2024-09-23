@@ -1,5 +1,6 @@
 import axios from "axios";
 import { EmployeeFormData } from "../components/EmployeeForm/schema";
+import { OK } from "zod";
 
 const baseURL = import.meta.env.VITE_APP_API_BASE_URL;
 
@@ -56,6 +57,27 @@ export interface EmployeeResponse {
       throw new Error("failed to register employee");
     }
     return response.data;
+  }
+
+  export const editEmployeeById = async (id: number, data: EmployeeFormData) =>{
+    const response = await axios.patch<EmployeeFormData>(baseURL + `/employees/${id}`, data);
+    if(response.status !== 200){
+      throw new Error("failed to register employee");
+    }
+    return response.data;
+  }
+
+  export const archiveEmployeeById = async (id: number) => {
+    const response = await axios.patch(baseURL + `/employees/archive/${id}`);
+    if(response.status !== 200){
+      throw new Error("failed to archive employee");
+    }
+    return response.data;
+  }
+
+  export const deleteEmployeeById = async (id: number) => {
+    await axios.delete(baseURL + `/employees/${id}`);
+return true;
   }
 
 // export const getAllEmployees = async () => {

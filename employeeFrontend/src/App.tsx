@@ -7,6 +7,7 @@ import EmployeePage from "./pages/EmployeePage/EmployeePage";
 import CreateEmployeePage from "./pages/CreateEmployeePage/CreateEmployeePage";
 import NavBar from "./components/NavBar/NavBar";
 import EmployeeInfoPage from "./pages/EmployeeInfoPage/EmployeeInfoPage";
+import EditEmployeePage from "./pages/EditEmployeePage/EditEmployeePage";
 
 function App() {
   // const [employees, setEmployees] = useState<EmployeeResponse[]>([]);
@@ -23,13 +24,14 @@ function App() {
     <>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
-          <NavBar/>
+          <NavBar />
           {/* <div className="buffer"></div> */}
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/employees" element={<EmployeePage />} />
             <Route path="/employees/create" element={<CreateEmployeePage />} />
-            <Route path="/employees/:id" element={<EmployeeInfoPage/>}/>
+            <Route path="/employees/:id" element={<EmployeeInfoPage />} />
+            <Route path="/employees/edit/:id" element={<EditEmployeePage />} />
           </Routes>
         </QueryClientProvider>
       </BrowserRouter>

@@ -2,6 +2,8 @@ import { EmployeeFormData, schema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import styles from "./EmployeeForm.module.scss";
+import { useEffect, useState } from "react";
+import { number } from "zod";
 
 type FormType = "CREATE" | "EDIT";
 
@@ -35,9 +37,12 @@ const EmployeeForm = ({
   },
   onSubmit,
 }: EmployeeFormProps) => {
+  const [fullTime, setFullTime] = useState<boolean>(false);
   const {
     reset,
     register,
+    watch,
+    setValue,
     formState: { errors, isSubmitSuccessful },
     handleSubmit,
   } = useForm<EmployeeFormData>({
@@ -45,145 +50,144 @@ const EmployeeForm = ({
     defaultValues,
   });
 
-  //   const normalizeBoolean = (value: string) => {
-  //     if (value === "true") {
-  //       return true;
-  //     }
+  const isFullTime = watch("isFullTime");
 
-  //     if (value === "false") {
-  //       return false;
-  //     }
-
-  //     return value;
-  //   };
+  const fullTimeHours = () => {
+    setValue("weeklyHours", 40);
+  };
 
   isSubmitSuccessful && reset();
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}><fieldset className={styles.section}>
-        <legend>Employee Details</legend>
-        <div className={styles.input}>
-          <label htmlFor="firstName">First Name</label>
-          <input id="firstName" type="text" {...register("firstName")} />
-          {errors?.firstName && <small>{errors.firstName.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="middleName">Middle Name</label>
-          <input id="middleName" type="text" {...register("middleName")} />
-          {errors?.middleName && <small>{errors.middleName.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="lastName">Last Name</label>
-          <input id="lastName" type="text" {...register("lastName")} />
-          {errors?.lastName && <small>{errors.lastName.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="gender">Gender</label>
-          <select id="gender" {...register("gender")}>
-            <option disabled value="">
-              Gender
-            </option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="nonbinary">Nonbinary</option>
-          </select>
-          {errors?.gender && <small>{errors.gender.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="birthDate">Date Of Birth</label>
-          <input id="birthDate" type="date" {...register("birthDate")} />
-          {errors?.birthDate && <small>{errors.birthDate.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="email">Email</label>
-          <input id="email" type="email" {...register("email")} />
-          {errors?.email && <small>{errors.email.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="mobile">Mobile</label>
-          <input
-            id="mobile"
-            type="tel"
-            pattern="[0-9]{4}[0-9]{3}[0-9]{3}"
-            {...register("mobile")}
-          />
-          {errors?.mobile && <small>{errors.mobile.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="street">Street Address</label>
-          <input id="street" type="text" {...register("street")} />
-          {errors?.street && <small>{errors.street.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="suburb">Suburb</label>
-          <input id="suburb" type="text" {...register("suburb")} />
-          {errors?.suburb && <small>{errors.suburb.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="state">State</label>
-          <select id="state" {...register("state")}>
-            <option disabled value="">
-              State
-            </option>
-            <option value="NSW">NSW</option>
-            <option value="VIC">VIC</option>
-            <option value="QLD">QLD</option>
-            <option value="SA">SA</option>
-            <option value="WA">WA</option>
-            <option value="TAS">TAS</option>
-            <option value="NT">NT</option>
-            <option value="ACT">ACT</option>
-          </select>
-          {errors?.state && <small>{errors.state.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="postCode">Postcode</label>
-          <input id="postCode" type="text" {...register("postCode")} />
-          {errors?.postCode && <small>{errors.postCode.message}</small>}
-        </div>
-        </fieldset><fieldset className={styles.section}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <fieldset className={styles.section}>
+          <legend>Employee Details</legend>
+          <div className={styles.input}>
+            <label htmlFor="firstName">First Name</label>
+            <input id="firstName" type="text" {...register("firstName")} />
+            {errors?.firstName && <small>{errors.firstName.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="middleName">Middle Name</label>
+            <input id="middleName" type="text" {...register("middleName")} />
+            {errors?.middleName && <small>{errors.middleName.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="lastName">Last Name</label>
+            <input id="lastName" type="text" {...register("lastName")} />
+            {errors?.lastName && <small>{errors.lastName.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="gender">Gender</label>
+            <select id="gender" {...register("gender")}>
+              <option disabled value="">
+                Gender
+              </option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="nonbinary">Nonbinary</option>
+            </select>
+            {errors?.gender && <small>{errors.gender.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="birthDate">Date Of Birth</label>
+            <input id="birthDate" type="date" {...register("birthDate")} />
+            {errors?.birthDate && <small>{errors.birthDate.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="email">Email</label>
+            <input id="email" type="email" {...register("email")} />
+            {errors?.email && <small>{errors.email.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="mobile">Mobile</label>
+            <input
+              id="mobile"
+              type="tel"
+              pattern="[0-9]{4}[0-9]{3}[0-9]{3}"
+              {...register("mobile")}
+            />
+            {errors?.mobile && <small>{errors.mobile.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="street">Street Address</label>
+            <input id="street" type="text" {...register("street")} />
+            {errors?.street && <small>{errors.street.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="suburb">Suburb</label>
+            <input id="suburb" type="text" {...register("suburb")} />
+            {errors?.suburb && <small>{errors.suburb.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="state">State</label>
+            <select id="state" {...register("state")}>
+              <option disabled value="">
+                State
+              </option>
+              <option value="NSW">NSW</option>
+              <option value="VIC">VIC</option>
+              <option value="QLD">QLD</option>
+              <option value="SA">SA</option>
+              <option value="WA">WA</option>
+              <option value="TAS">TAS</option>
+              <option value="NT">NT</option>
+              <option value="ACT">ACT</option>
+            </select>
+            {errors?.state && <small>{errors.state.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="postCode">Postcode</label>
+            <input id="postCode" type="text" {...register("postCode")} />
+            {errors?.postCode && <small>{errors.postCode.message}</small>}
+          </div>
+        </fieldset>
+        <fieldset className={styles.section}>
           <legend>Employment details</legend>
-        <div className={styles.input}>
-          <label>Contract</label>
-          <span>
+          <div className={styles.input}>
+            <label>Contract</label>
+            <span>
+              <input
+                id="isPermanent"
+                type="checkbox"
+                {...register("isPermanent")}
+              />
+              <label htmlFor="isPermanent">Permanent</label>
+            </span>
+            {errors?.isPermanent && <small>{errors.isPermanent.message}</small>}
+            <span>
+              <input
+                id="isFullTime"
+                type="checkbox"
+                {...register("isFullTime")}
+                onClick={()=> setValue("weeklyHours", 40)}
+              />
+              <label htmlFor="isFullTime">Full Time</label>
+            </span>
+            {errors?.isFullTime && <small>{errors.isFullTime.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="startDate">Starting Date</label>
+            <input id="startDate" type="date" {...register("startDate")} />
+            {errors?.startDate && <small>{errors.startDate.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="finishDate">Finishing Date</label>
+            <input id="finishDate" type="date" {...register("finishDate")} />
+            {errors?.finishDate && <small>{errors.finishDate.message}</small>}
+          </div>
+          <div className={styles.input}>
+            <label htmlFor="weeklyHours">Weekly Hours</label>
             <input
-              id="isPermanent"
-              type="checkbox"
-              {...register("isPermanent")}
+              id="weeklyHours"
+              type="number"
+              disabled={isFullTime === true}
+              {...register("weeklyHours", { valueAsNumber: true })}
             />
-            <label htmlFor="isPermanent">Permanent</label>
-          </span>
-          {errors?.isPermanent && <small>{errors.isPermanent.message}</small>}
-          <span>
-            <input
-              id="isFullTime"
-              type="checkbox"
-              {...register("isFullTime")}
-            />
-            <label htmlFor="isFullTime">Full Time</label>
-          </span>
-          {errors?.isFullTime && <small>{errors.isFullTime.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="startDate">Starting Date</label>
-          <input id="startDate" type="date" {...register("startDate")} />
-          {errors?.startDate && <small>{errors.startDate.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="finishDate">Finishing Date</label>
-          <input id="finishDate" type="date" {...register("finishDate")} />
-          {errors?.finishDate && <small>{errors.finishDate.message}</small>}
-        </div>
-        <div className={styles.input}>
-          <label htmlFor="weeklyHours">Weekly Hours</label>
-          <input
-            id="weeklyHours"
-            type="number"
-            {...register("weeklyHours", { valueAsNumber: true })}
-          />
-          {errors?.weeklyHours && <small>{errors.weeklyHours.message}</small>}
-        </div></fieldset>
+            {errors?.weeklyHours && <small>{errors.weeklyHours.message}</small>}
+          </div>
+        </fieldset>
         <button>{formType === "CREATE" ? "Create" : "Edit"} Employee</button>
       </form>
     </div>

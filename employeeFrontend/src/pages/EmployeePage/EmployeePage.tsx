@@ -1,18 +1,14 @@
 import React, { useState } from "react";
-import Queries from "../../features/queries/Queries";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
-  EmployeeResponse,
   getAllEmployees,
-  getPagedEmployees,
 } from "../../services/EmployeeServices";
-import EmployeeCard from "../../components/EmployeeCard/EmployeeCard";
 import { Link } from "react-router-dom";
 import styles from "./EmployeePage.module.scss";
 import SearchBar from "../../components/SearchBar/SearchBar";
 
 const EmployeePage = () => {
-  const [page, setPage] = useState<number>(1);
+  const [archived, setArchived] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<FormDataEntryValue | null>("");
 const searchString = searchTerm?.toString().toLowerCase();
 
@@ -26,15 +22,6 @@ const searchString = searchTerm?.toString().toLowerCase();
     queryFn: getAllEmployees,
   });
 
-  // const { isFetching, isPending, isError, data, error } = useQuery({
-  //   queryKey: ["employees", {firstName: searchTerm}],
-  //   queryFn: getAllEmployees,
-  // });
-
-  // const { isPending, isError, error, data } = useQuery({
-  //   queryKey: ['employees', page],
-  //   queryFn:  () => getPagedEmployees(page),
-  // });
   if (isFetching) {
     return <span>Loading...</span>;
   }
@@ -53,7 +40,7 @@ const searchString = searchTerm?.toString().toLowerCase();
       <h1>Employees</h1>
       <p>Search for Employees here and click "See more" to view their profiles</p></div>
       <span>
-        <div><h5>filter</h5></div>
+        <div><h5>filter</h5><button onClick={()=>{setArchived(!archived)}}>{archived ? "Active Employees" : "Archived Employees"}</button></div>
         <SearchBar onSearch={handleSearch} />
       </span>
       <table>
@@ -68,7 +55,8 @@ const searchString = searchTerm?.toString().toLowerCase();
         </thead>
         <tbody>
           {searchTerm !== "" ?  data.map((employee) => (
-            `${employee.firstName} ${employee.middleName} ${employee.lastName}`.toLowerCase().includes(`${searchString}`) &&
+            employee.isArchived == archived &&
+            `${employee.firstName} ${employee?.middleName} ${employee.lastName}`.toLowerCase().includes(`${searchString}`) &&
             <tr key={employee.id}>
               <td>
                 {employee.firstName}
@@ -83,6 +71,7 @@ const searchString = searchTerm?.toString().toLowerCase();
               </td>
             </tr>
           )) : data.map((employee) => (
+            employee.isArchived == archived &&
             <tr key={employee.id}>
               <td>
                 {employee.firstName}

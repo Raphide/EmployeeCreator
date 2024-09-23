@@ -57,6 +57,7 @@ public class EmployeeController {
         Employee foundEmployee = result.orElseThrow(() -> new NotFoundException("Could not find employee with id " + id));
         return new ResponseEntity<>(foundEmployee, HttpStatus.OK);
     }
+  
 
     @PatchMapping("/{id}")
     public ResponseEntity<Employee> updateEmployeeById(@PathVariable Long id, @Valid @RequestBody UpdateEmployeeDTO data) throws Exception {

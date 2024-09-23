@@ -49,7 +49,14 @@
 
 ## Change logs
 
-### 20/09/2024 - First Changelog
+### 20/09/2024 - Front End Tweaking
+
+- Tweaked a bit of the styling for the Employee Info Pages
+- Have also implemented a bit more sound logic to both the Employee Form validation on the front end as well as some additional business logic in the back end.
+- Added a feature to Archive Employees instead of deleting them
+- Added feature to only list current employees or archived employees depending on a button click
+
+### 20/09/2024 - Styling Start
 
 - Started Styling in the front end
 - Have added a search bar
