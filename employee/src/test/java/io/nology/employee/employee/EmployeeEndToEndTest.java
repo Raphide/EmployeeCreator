@@ -32,33 +32,31 @@ public class EmployeeEndToEndTest {
 
     Long employeeId;
 
-    public String userCreator(String firstName, String lastName) {
-        int fnLength = firstName.length() >= 3 ? 3 : 2;
-        int lnLength = lastName.length() >= 3 ? 3 : 2;
-        String newUser = firstName.replaceAll("[^a-zA-Z]", "").substring(0, fnLength).toLowerCase()
-                + lastName.replaceAll("[^a-zA-Z]", "").substring(0, lnLength).toLowerCase();
-        if (employeeRepository.existsByEmployeeUser(newUser)) {
-            int number = 1;
-            String idString = Integer.toString(number);
-            newUser = newUser.concat(idString);
-            while (employeeRepository.existsByEmployeeUser(newUser)) {
-                String userArray[] = newUser.split("(?<=\\D)(?=\\d)");
-                int idInt = Integer.valueOf(userArray[1]);
-                idInt++;
-                String newIdString = Integer.toString(idInt);
-                userArray[1] = newIdString;
-                newUser = String.join("", userArray);
-            }
-        }
-        return newUser;
-    }
+    // public String userCreator(String firstName, String lastName) {
+    //     int fnLength = firstName.length() >= 3 ? 3 : 2;
+    //     int lnLength = lastName.length() >= 3 ? 3 : 2;
+    //     String newUser = firstName.replaceAll("[^a-zA-Z]", "").substring(0, fnLength).toLowerCase()
+    //             + lastName.replaceAll("[^a-zA-Z]", "").substring(0, lnLength).toLowerCase();
+    //     if (employeeRepository.existsByEmployeeUser(newUser)) {
+    //         int number = 1;
+    //         String idString = Integer.toString(number);
+    //         newUser = newUser.concat(idString);
+    //         while (employeeRepository.existsByEmployeeUser(newUser)) {
+    //             String userArray[] = newUser.split("(?<=\\D)(?=\\d)");
+    //             int idInt = Integer.valueOf(userArray[1]);
+    //             idInt++;
+    //             String newIdString = Integer.toString(idInt);
+    //             userArray[1] = newIdString;
+    //             newUser = String.join("", userArray);
+    //         }
+    //     }
+    //     return newUser;
+    // }
 
     // Date date1 = new Date(1983 - 07 - 17);
     // Date date2 = new Date(1992 - 9 - 27);
     // Date date3 = new Date(2020 - 03 - 14);
     // Date date4 = new Date(2025 - 11 - 29);
-
-    
 
 
     @BeforeEach
@@ -67,8 +65,6 @@ public class EmployeeEndToEndTest {
         employeeRepository.deleteAll();
 
         Employee employee1 = new Employee();
-  
-
         employee1.setFirstName("Cheryl");
         employee1.setMiddleName("Heather");
         employee1.setLastName("Mason");
@@ -80,7 +76,7 @@ public class EmployeeEndToEndTest {
         employee1.setSuburb("Silent Hill");
         employee1.setState("NSW");
         employee1.setPostCode("2000");
-        employee1.setEmployeeUser(userCreator(employee1.getFirstName(), employee1.getLastName()));
+        employee1.setEmployeeUser("chemas");
         employee1.setEmployeeEmail();
         // employee1.setStartDate(date2);
         // employee1.setFinishDate(date3);
@@ -103,7 +99,7 @@ public class EmployeeEndToEndTest {
         employee2.setSuburb("FakesVille");
         employee2.setState("NSW");
         employee2.setPostCode("2000");
-        employee2.setEmployeeUser(userCreator(employee2.getFirstName(), employee2.getLastName()));
+        employee2.setEmployeeUser("squten");
         employee2.setEmployeeEmail();
         // employee2.setStartDate(date3);
         // employee2.setFinishDate(date4);
@@ -156,5 +152,8 @@ public class EmployeeEndToEndTest {
                 .body("middleName", hasItems("Heather", null, "Greggor"))
                 .body("isFullTime", hasItems(true, true, false)).body("employeeUser", hasItems("chemas", "squten", "gregre"));
     }
+
+
+
 
 }
