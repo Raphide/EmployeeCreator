@@ -51,6 +51,24 @@ public class EmployeeController {
         return new ResponseEntity<Page<Employee>>(employees, HttpStatus.OK);
     }
 
+    @GetMapping("/term={term}")
+    public ResponseEntity<List<Employee>> getEmployeesByTerm(@PathVariable String term) throws NotFoundException{
+        List<Employee> employees = this.employeeService.findByTerm(term);
+        if(employees.isEmpty()){
+            throw new NotFoundException("No results found");
+        }
+        return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
+    }
+
+    @GetMapping("/page={page}/term={term}")
+    public ResponseEntity<Page<Employee>> getPagedEmployeesByTerm(@PathVariable int page, @PathVariable String term) throws NotFoundException{
+        Page<Employee> employees = this.employeeService.findByPageAndTerm(page, term);
+        if(employees.isEmpty()){
+            throw new NotFoundException("No more results");
+        }
+        return new ResponseEntity<Page<Employee>>(employees, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Employee> findEmployeeById(@PathVariable Long id) throws Exception {
         Optional<Employee> result = this.employeeService.findById(id);

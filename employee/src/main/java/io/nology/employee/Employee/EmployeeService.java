@@ -7,6 +7,8 @@ import org.apache.tomcat.util.buf.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -22,23 +24,6 @@ public class EmployeeService {
   private ModelMapper mapper;
 
   public Employee createEmployee(@Valid CreateEmployeeDTO data) {
-    // Employee newEmployee = new Employee();
-    // newEmployee.setFirstName(data.getFirstName().trim());
-    // newEmployee.setMiddleName(data.getMiddleName().trim());
-    // newEmployee.setLastName(data.getLastName().trim());
-    // newEmployee.setBirthDate(data.getBirthDate());
-    // newEmployee.setGender(data.getGender().trim());
-    // newEmployee.setEmail(data.getEmail().trim());
-    // newEmployee.setMobile(data.getMobile().trim());
-    // newEmployee.setStreet(data.getStreet().trim());
-    // newEmployee.setSuburb(data.getSuburb().trim());
-    // newEmployee.setState(data.getState().trim());
-    // newEmployee.setPostCode(data.getPostCode().trim());
-    // newEmployee.setIsPermanent(data.getIsPermanent());
-    // newEmployee.setIsFullTime(data.getIsFullTime());
-    // newEmployee.setStartDate(data.getStartDate());
-    // newEmployee.setFinishDate(data.getFinishDate());
-    // newEmployee.setWeeklyHours(data.getWeeklyHours());
     Employee newEmployee = mapper.map(data, Employee.class);
     int fnLength = data.getFirstName().length() >= 3 ? 3 : 2;
     int lnLength = data.getLastName().length() >= 3 ? 3 : 2;
@@ -68,6 +53,20 @@ public class EmployeeService {
 
   public Page<Employee> findByPage(Pageable paging) {
    return this.repo.findAll(paging);
+  }
+
+  public List<Employee> findByTerm(String term) {
+    return this.repo.findByTerm(term);
+  }
+
+  public Page<Employee> findByPageAndTerm(int page, String term) {
+    Pageable paging = PageRequest.of(page, 10);
+    List<Employee> employeeList = this.repo.findByTerm(term);
+    int start = (int) paging.getOffset();
+    int end = Math.min((start + paging.getPageSize()), employeeList.size());
+    List<Employee> pageContent = employeeList.subList(start, end);
+    return new PageImpl<>(pageContent, paging, employeeList.size());
+   
   }
 
   public Optional<Employee> findById(Long id) {
@@ -104,7 +103,5 @@ public class EmployeeService {
     Employee updatedEmployee = this.repo.save(foundEmployee);
     return Optional.of(updatedEmployee);
   }
-
-
 
 }

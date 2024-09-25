@@ -49,6 +49,16 @@
 
 ## Change logs
 
+### 25/09/2024 - Pagination implemented
+- End to End testing started
+
+### 24/09/2024 - Pagination implemented
+- Search function for employees names has been implemented on the front end
+- Query function to support the Search function has been implemented on the back end.
+
+### 22/09/2024 - Pagination implemented
+- Pagination has been implemented on the front end with pageable results on the backend 
+
 ### 20/09/2024 - Front End Tweaking
 
 - Tweaked a bit of the styling for the Employee Info Pages

@@ -52,7 +52,7 @@ public class UpdateEmployeeDTO {
     private Boolean isPermanent;
 
     private Boolean isFullTime;
-    @DateTimeFormat(iso = ISO.DATE, fallbackPatterns = { "M/d/yy", "dd.MM.yyyy" })
+    @DateTimeFormat(iso = ISO.DATE_TIME, fallbackPatterns = { "M/d/yy", "dd.MM.yyyy" })
     private Date startDate;
     @DateTimeFormat(iso = ISO.DATE, fallbackPatterns = { "M/d/yy", "dd.MM.yyyy" })
     private Date finishDate;

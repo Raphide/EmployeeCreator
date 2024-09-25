@@ -8,6 +8,7 @@ import CreateEmployeePage from "./pages/CreateEmployeePage/CreateEmployeePage";
 import NavBar from "./components/NavBar/NavBar";
 import EmployeeInfoPage from "./pages/EmployeeInfoPage/EmployeeInfoPage";
 import EditEmployeePage from "./pages/EditEmployeePage/EditEmployeePage";
+import TestPage from "./pages/TestPage/TestPage";
 
 function App() {
   // const [employees, setEmployees] = useState<EmployeeResponse[]>([]);
@@ -32,6 +33,7 @@ function App() {
             <Route path="/employees/create" element={<CreateEmployeePage />} />
             <Route path="/employees/:id" element={<EmployeeInfoPage />} />
             <Route path="/employees/edit/:id" element={<EditEmployeePage />} />
+            <Route path="/test" element={<TestPage/>}/>
           </Routes>
         </QueryClientProvider>
       </BrowserRouter>
