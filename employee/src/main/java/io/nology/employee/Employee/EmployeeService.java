@@ -23,25 +23,46 @@ public class EmployeeService {
   @Autowired
   private ModelMapper mapper;
 
+  public String userCreator(String firstName, String lastName) {
+    int fnLength = firstName.length() >= 3 ? 3 : 2;
+    int lnLength = lastName.length() >= 3 ? 3 : 2;
+    String newUser = firstName.replaceAll("[^a-zA-Z]", "").substring(0, fnLength).toLowerCase()
+            + lastName.replaceAll("[^a-zA-Z]", "").substring(0, lnLength).toLowerCase();
+    if (repo.existsByEmployeeUser(newUser)) {
+        int number = 1;
+        String idString = Integer.toString(number);
+        newUser = newUser.concat(idString);
+        while (repo.existsByEmployeeUser(newUser)) {
+            String userArray[] = newUser.split("(?<=\\D)(?=\\d)");
+            int idInt = Integer.valueOf(userArray[1]);
+            idInt++;
+            String newIdString = Integer.toString(idInt);
+            userArray[1] = newIdString;
+            newUser = String.join("", userArray);
+        }
+    }
+    return newUser;
+}
+
   public Employee createEmployee(@Valid CreateEmployeeDTO data) {
     Employee newEmployee = mapper.map(data, Employee.class);
-    int fnLength = data.getFirstName().length() >= 3 ? 3 : 2;
-    int lnLength = data.getLastName().length() >= 3 ? 3 : 2;
-    String newUser = data.getFirstName().replaceAll("[^a-zA-Z]", "").substring(0, fnLength).toLowerCase() + data.getLastName().replaceAll("[^a-zA-Z]", "").substring(0, lnLength).toLowerCase();
-    if (repo.existsByEmployeeUser(newUser)) {
-      int number = 1;
-      String idString = Integer.toString(number);
-      newUser = newUser.concat(idString);
-      while (repo.existsByEmployeeUser(newUser)) {
-        String userArray[] = newUser.split("(?<=\\D)(?=\\d)");
-        int idInt = Integer.valueOf(userArray[1]);
-        idInt++;
-        String newIdString = Integer.toString(idInt);
-        userArray[1] = newIdString;
-        newUser = String.join("", userArray);
-      }
-    }
-    newEmployee.setEmployeeUser(newUser);
+    // int fnLength = data.getFirstName().length() >= 3 ? 3 : 2;
+    // int lnLength = data.getLastName().length() >= 3 ? 3 : 2;
+    // String newUser = data.getFirstName().replaceAll("[^a-zA-Z]", "").substring(0, fnLength).toLowerCase() + data.getLastName().replaceAll("[^a-zA-Z]", "").substring(0, lnLength).toLowerCase();
+    // if (repo.existsByEmployeeUser(newUser)) {
+    //   int number = 1;
+    //   String idString = Integer.toString(number);
+    //   newUser = newUser.concat(idString);
+    //   while (repo.existsByEmployeeUser(newUser)) {
+    //     String userArray[] = newUser.split("(?<=\\D)(?=\\d)");
+    //     int idInt = Integer.valueOf(userArray[1]);
+    //     idInt++;
+    //     String newIdString = Integer.toString(idInt);
+    //     userArray[1] = newIdString;
+    //     newUser = String.join("", userArray);
+    //   }
+    // }
+    newEmployee.setEmployeeUser(userCreator(newEmployee.getFirstName(), newEmployee.getLastName()));
     newEmployee.setEmployeeEmail();
     newEmployee.setIsArchived(false);
     return this.repo.save(newEmployee);

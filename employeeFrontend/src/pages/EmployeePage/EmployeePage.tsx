@@ -80,9 +80,9 @@ const EmployeePage = () => {
           </tr>
         </thead>
         <tbody>
-          {isError && <tr>No results for {"searched term" || searchTerm}</tr>}
-          {isFetching && <tr>Loading...</tr>}
-          {isPending && <tr>Loading...</tr>}
+          {isError && <tr><td>No results for {"searched term" || searchTerm}</td></tr>}
+          {isFetching && <tr><td>Loading...</td></tr>}
+          {isPending && <tr><td>Loading...</td></tr>}
           {data &&
             data.content.map(
               (employee) =>
