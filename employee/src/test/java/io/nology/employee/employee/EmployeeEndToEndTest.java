@@ -107,7 +107,7 @@ public class EmployeeEndToEndTest {
         employee2.setIsFullTime(false);
         employee2.setIsPermanent(false);
         employee2.setWeeklyHours(36);
-        employee1.setIsArchived(false);
+        employee2.setIsArchived(false);
         employeeRepository.save(employee2);
     }
 
@@ -229,6 +229,11 @@ public class EmployeeEndToEndTest {
     @Test
     public void getPagedEmployeesByTerm_success(){
         given().when().get("/employees/page={page}/term={term}", 0, "Che").then().statusCode(HttpStatus.OK.value()).body("first", equalTo(true)).body("last", equalTo(true)).body("totalPages", equalTo(1)).body("totalElements", equalTo(1)).body("content", hasSize(1));
+    }
+
+    @Test
+    public void getPagedEmployeesByTermAndArchivedStatus_success(){
+        given().when().get("employees/page={page}/term={term}/archived={archived}", 0, "", false).then().statusCode(HttpStatus.OK.value()).body("first", equalTo(true)).body("last", equalTo(true)).body("totalPages", equalTo(1)).body("totalElements", equalTo(2)).body("content", hasSize(2));
     }
 
 }

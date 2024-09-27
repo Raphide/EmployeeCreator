@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import io.nology.employee.common.ValidationErrors;
+import io.nology.employee.common.exceptions.ServiceValidationException;
 import jakarta.validation.Valid;
 
 @Service
@@ -43,8 +45,18 @@ public class EmployeeService {
     return newUser;
 }
 
-  public Employee createEmployee(@Valid CreateEmployeeDTO data) {
+  public Employee createEmployee(@Valid CreateEmployeeDTO data) throws ServiceValidationException {
+    ValidationErrors errors = new ValidationErrors();
     Employee newEmployee = mapper.map(data, Employee.class);
+    if(data.getFirstName().isEmpty() || data.getFirstName().length() < 2){
+      errors.addError("firstName", "firstName cannot be empty");
+    }
+    if(data.getLastName().isEmpty()){
+      errors.addError("lastName", "lastName cannot be empty");
+    }
+    if(errors.hasErrors()){
+      throw new ServiceValidationException(errors);
+    }
     newEmployee.setEmployeeUser(userCreator(newEmployee.getFirstName(), newEmployee.getLastName()));
     newEmployee.setEmployeeEmail();
     newEmployee.setIsArchived(false);
