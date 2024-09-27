@@ -1,4 +1,3 @@
-import React from "react";
 import { archiveEmployeeById, deleteEmployeeById, getEmployeeById } from "../../services/EmployeeServices";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -101,10 +100,10 @@ const EmployeeInfoPage = () => {
       </fieldset>
       </div>
       </div>
-      
+      <span className={styles.buttons}>
       <button onClick={handleClick}>{data.isArchived ? "Reactivate " : "Remove "}Employee</button>
       {data.isArchived && <button className={styles.delete} onClick={deleteByClick}>Delete Employee from Database</button>}
-      <Link to={`/employees/edit/${data.id}`}><button>Edit</button></Link>
+      <Link to={`/employees/edit/${data.id}`}><button>Edit</button></Link></span>
     </div>
   );
 };

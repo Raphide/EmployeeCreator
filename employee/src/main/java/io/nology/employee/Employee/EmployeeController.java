@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -63,6 +62,15 @@ public class EmployeeController {
     @GetMapping("/page={page}/term={term}")
     public ResponseEntity<Page<Employee>> getPagedEmployeesByTerm(@PathVariable int page, @PathVariable String term) throws NotFoundException{
         Page<Employee> employees = this.employeeService.findByPageAndTerm(page, term);
+        if(employees.isEmpty()){
+            throw new NotFoundException("No more results");
+        }
+        return new ResponseEntity<Page<Employee>>(employees, HttpStatus.OK);
+    }
+
+    @GetMapping("/page={page}/term={term}/archived={archived}")
+    public ResponseEntity<Page<Employee>> getPagedEmployeesByTermAndArchivedStatus(@PathVariable int page, @PathVariable String term, @PathVariable Boolean archived) throws NotFoundException{
+        Page<Employee> employees = this.employeeService.findByPageAndTermAndArchived(page, term, archived);
         if(employees.isEmpty()){
             throw new NotFoundException("No more results");
         }

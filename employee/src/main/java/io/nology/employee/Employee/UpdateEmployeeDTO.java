@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 

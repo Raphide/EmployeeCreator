@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getSearchedEmployees } from "../../services/EmployeeServices";
+import { getSearchedEmployees, getSearchedEmployeesByArchiveStatus } from "../../services/EmployeeServices";
 import { Link } from "react-router-dom";
 import styles from "./EmployeePage.module.scss";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -16,12 +16,19 @@ const EmployeePage = () => {
     setSearchTerm(term);
   };
 
+  // const { isFetching, isPending, isError, data, error, isPlaceholderData } =
+  //   useQuery({
+  //     queryKey: ["employees", page, searchString],
+  //     queryFn: () => getSearchedEmployees(page, searchString),
+  //     placeholderData: keepPreviousData,
+  //   });
+
   const { isFetching, isPending, isError, data, error, isPlaceholderData } =
-    useQuery({
-      queryKey: ["employees", page, searchString],
-      queryFn: () => getSearchedEmployees(page, searchString),
-      placeholderData: keepPreviousData,
-    });
+  useQuery({
+    queryKey: ["employees", page, searchString, archived],
+    queryFn: () => getSearchedEmployeesByArchiveStatus(page, searchString, archived),
+    placeholderData: keepPreviousData,
+  });
 
   if (isError) {
     console.log(error.message);
@@ -35,30 +42,27 @@ const EmployeePage = () => {
           Search for Employees here and click "See more" to view their profiles
         </p>
       </div>
-      <span>
+      <span className={styles.filter}>
         <div>
-          <h5>filter</h5>
           <button
             onClick={() => {
               setArchived(!archived);
             }}
           >
-            {archived ? "Active Employees" : "Archived Employees"}
+            {archived ? "Archived Employees" : "Active Employees"}
           </button>
         </div>
-        <SearchBar onSearch={handleSearch} />
-      </span>
       <span>
-        <button
+        <button className={styles.pagButton}
           onClick={() => setPage((old) => Math.max(old - 1, 0))}
           disabled={page === 0}
         >
-          Previous Page
+          Prev
         </button>
         <h3>
           {page + 1}/{data?.totalPages || page + 1}
         </h3>
-        <button
+        <button className={styles.pagButton}
           onClick={() => {
             if (!isPlaceholderData && data?.totalPages) {
               setPage((old) => old + 1);
@@ -66,8 +70,10 @@ const EmployeePage = () => {
           }}
           disabled={page + 1 === data?.totalPages}
         >
-          Next Page
+          Next
         </button>
+      </span>
+      <SearchBar onSearch={handleSearch} />
       </span>
       <table>
         <thead>
@@ -80,16 +86,20 @@ const EmployeePage = () => {
           </tr>
         </thead>
         <tbody>
-          {isError && <tr><td>No results for {"searched term" || searchTerm}</td></tr>}
-          {isFetching && <tr><td>Loading...</td></tr>}
-          {isPending && <tr><td>Loading...</td></tr>}
-          {data &&
+          {isError && (
+            <tr>
+              <td>No results for {"searched term" || searchTerm}</td>
+            </tr>
+          )}
+          {isPending || isFetching && (
+            <tr>
+              <td>Loading...</td>
+            </tr>
+          )}
+          {!isFetching && !isPending && data &&
             data.content.map(
               (employee) =>
-                employee.isArchived == archived &&
-                `${employee.firstName} ${employee?.middleName} ${employee.lastName}`
-                  .toLowerCase()
-                  .includes(`${searchString}`) && (
+         (
                   <tr key={employee.id}>
                     <td>
                       {employee.firstName}
@@ -98,10 +108,8 @@ const EmployeePage = () => {
                     </td>
                     <td>{employee.employeeUser}</td>
                     <td>{employee.employeeEmail}</td>
-                    <td>
-                      {employee.isPermanent ? "Permanent" : "Temporary"}{" "}
-                      {employee.isFullTime ? "Full Time" : "Part Time"}
-                    </td>
+                    {employee.isArchived ? <td>Contract ended</td> : <td> {employee.isPermanent ? "Permanent" : "Temporary"}{" "}
+                    {employee.isFullTime ? "Full Time" : "Part Time"}</td>}
                     <td>
                       <Link to={`/employees/${employee.id}`}>See more</Link>
                     </td>

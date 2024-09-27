@@ -3,7 +3,6 @@ package io.nology.employee.Employee;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.tomcat.util.buf.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,22 +45,6 @@ public class EmployeeService {
 
   public Employee createEmployee(@Valid CreateEmployeeDTO data) {
     Employee newEmployee = mapper.map(data, Employee.class);
-    // int fnLength = data.getFirstName().length() >= 3 ? 3 : 2;
-    // int lnLength = data.getLastName().length() >= 3 ? 3 : 2;
-    // String newUser = data.getFirstName().replaceAll("[^a-zA-Z]", "").substring(0, fnLength).toLowerCase() + data.getLastName().replaceAll("[^a-zA-Z]", "").substring(0, lnLength).toLowerCase();
-    // if (repo.existsByEmployeeUser(newUser)) {
-    //   int number = 1;
-    //   String idString = Integer.toString(number);
-    //   newUser = newUser.concat(idString);
-    //   while (repo.existsByEmployeeUser(newUser)) {
-    //     String userArray[] = newUser.split("(?<=\\D)(?=\\d)");
-    //     int idInt = Integer.valueOf(userArray[1]);
-    //     idInt++;
-    //     String newIdString = Integer.toString(idInt);
-    //     userArray[1] = newIdString;
-    //     newUser = String.join("", userArray);
-    //   }
-    // }
     newEmployee.setEmployeeUser(userCreator(newEmployee.getFirstName(), newEmployee.getLastName()));
     newEmployee.setEmployeeEmail();
     newEmployee.setIsArchived(false);
@@ -87,7 +70,15 @@ public class EmployeeService {
     int end = Math.min((start + paging.getPageSize()), employeeList.size());
     List<Employee> pageContent = employeeList.subList(start, end);
     return new PageImpl<>(pageContent, paging, employeeList.size());
-   
+  }
+
+  public Page<Employee> findByPageAndTermAndArchived(int page, String term, Boolean archived) {
+    Pageable paging = PageRequest.of(page, 10);
+    List<Employee> employeeList = this.repo.findByTermAndArchiveStatus(term, archived);
+    int start = (int) paging.getOffset();
+    int end = Math.min((start + paging.getPageSize()), employeeList.size());
+    List<Employee> pageContent = employeeList.subList(start, end);
+    return new PageImpl<>(pageContent, paging, employeeList.size());
   }
 
   public Optional<Employee> findById(Long id) {
@@ -124,5 +115,7 @@ public class EmployeeService {
     Employee updatedEmployee = this.repo.save(foundEmployee);
     return Optional.of(updatedEmployee);
   }
+
+
 
 }

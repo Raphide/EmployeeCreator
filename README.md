@@ -36,7 +36,8 @@
 
 ## Known issues
 
--   MVP is still in progress so there are still bugs/issues present
+-   Permanent employees should have "finish date" input disabled when creating/editing
+- Tests not fully implemented
 
 ---
 
@@ -49,7 +50,10 @@
 
 ## Change logs
 
-### 25/09/2024 - Pagination implemented
+### 27/09/2024 - Testing implemented
+- Fixed issue with switching from active to archived employees
+
+### 25/09/2024 - Testing implemented
 - End to End testing started
 
 ### 24/09/2024 - Pagination implemented

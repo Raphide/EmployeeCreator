@@ -96,6 +96,19 @@ export const getSearchedEmployees = async (
   return response.data;
 };
 
+export const getSearchedEmployeesByArchiveStatus = async ( page: number = 0, term: String = "", archived: boolean) => {
+  const response = await axios.get<PagedResponse>(
+    baseURL + `/employees/page=${page}/term=${term}/archived=${archived}`
+  );
+  if(response.status === 404){
+    throw new Error(`No results found under searched term ${term}`)
+  }
+  if (response.status !== 200) {
+    throw new Error("failed to fetch Employees");
+  }
+  return response.data;
+}
+
 export const getEmployeeById = async (id: number) => {
   const response = await axios.get<EmployeeResponse>(
     baseURL + `/employees/${id}`
