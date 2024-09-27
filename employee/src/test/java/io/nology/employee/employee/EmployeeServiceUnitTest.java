@@ -1,8 +1,6 @@
 package io.nology.employee.employee;
 
-import static io.restassured.RestAssured.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -13,27 +11,23 @@ import static org.mockito.Mockito.when;
 import java.util.Date;
 import java.util.Optional;
 
-import org.assertj.core.util.DateUtil;
-import org.h2.mvstore.type.DataType;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import io.nology.employee.Employee.CreateEmployeeDTO;
 import io.nology.employee.Employee.Employee;
 import io.nology.employee.Employee.EmployeeRepository;
 import io.nology.employee.Employee.EmployeeService;
 import io.nology.employee.common.exceptions.ServiceValidationException;
-import io.restassured.internal.common.assertion.Assertion;
+
 
 public class EmployeeServiceUnitTest {
 
@@ -42,9 +36,6 @@ public class EmployeeServiceUnitTest {
 
     @Mock
     private ModelMapper mapper;
-
-    // @Mock
-    // Pageable paging;
 
     @Spy
     @InjectMocks
@@ -101,10 +92,25 @@ public class EmployeeServiceUnitTest {
     @Test
     public void userCreator_success() {
         Employee mockEmployee = new Employee();
+        String existingUser = "darjac";
+        Boolean doesExist = repo.existsByEmployeeUser(existingUser);
+        when(repo.existsByEmployeeUser(existingUser)).thenReturn(false);
+        assertEquals(false, doesExist);
         mockEmployee.setFirstName("Daryl");
         mockEmployee.setLastName("Jacobs");
         String userName = service.userCreator(mockEmployee.getFirstName(), mockEmployee.getLastName());
         assertEquals(userName, "darjac");
+    }
+
+    @Test
+    public void userCreator_alreadyExists_success() {
+        Employee mockEmployee = new Employee();
+        String existingUser = "darjac";
+        when(repo.existsByEmployeeUser(existingUser)).thenReturn(true);
+        mockEmployee.setFirstName("Daryl");
+        mockEmployee.setLastName("Jacobs");
+        String userName = service.userCreator(mockEmployee.getFirstName(), mockEmployee.getLastName());
+        assertEquals(userName, "darjac1");
     }
 
     @Test
@@ -205,6 +211,27 @@ public class EmployeeServiceUnitTest {
         when(mapper.map(mockDTO, Employee.class)).thenReturn(newEmployee);
         assertThrows(ServiceValidationException.class, () -> service.createEmployee(mockDTO));
         verify(repo, never()).save(any());
+    }
+
+    @Test
+    public void deleteById_success(){
+        Long EmployeeId = 1L;
+        Employee mockEmployee = new Employee();
+        Optional<Employee> result = Optional.of(mockEmployee);
+        when(repo.findById(EmployeeId)).thenReturn(result);
+        Boolean isDeleted = service.deleteById(EmployeeId);
+        assertEquals(true, isDeleted);
+        verify(repo).delete(mockEmployee);
+    }
+
+    @Test
+    public void deleteById_failure(){
+        Long employeeId = 100L;
+        Optional<Employee> result = Optional.empty();
+        when(repo.findById(employeeId)).thenReturn(result);
+        Boolean isDeleted = service.deleteById(employeeId);
+        assertEquals(false, isDeleted);
+        verify(repo, never()).delete(any());
     }
 
 }

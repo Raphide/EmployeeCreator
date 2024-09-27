@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.isNull;
 
 import io.nology.employee.Employee.CreateEmployeeDTO;
 import io.nology.employee.Employee.Employee;
@@ -32,28 +31,6 @@ public class EmployeeEndToEndTest {
     private EmployeeRepository employeeRepository;
 
     Long employeeId;
-
-    // public String userCreator(String firstName, String lastName) {
-    // int fnLength = firstName.length() >= 3 ? 3 : 2;
-    // int lnLength = lastName.length() >= 3 ? 3 : 2;
-    // String newUser = firstName.replaceAll("[^a-zA-Z]", "").substring(0,
-    // fnLength).toLowerCase()
-    // + lastName.replaceAll("[^a-zA-Z]", "").substring(0, lnLength).toLowerCase();
-    // if (employeeRepository.existsByEmployeeUser(newUser)) {
-    // int number = 1;
-    // String idString = Integer.toString(number);
-    // newUser = newUser.concat(idString);
-    // while (employeeRepository.existsByEmployeeUser(newUser)) {
-    // String userArray[] = newUser.split("(?<=\\D)(?=\\d)");
-    // int idInt = Integer.valueOf(userArray[1]);
-    // idInt++;
-    // String newIdString = Integer.toString(idInt);
-    // userArray[1] = newIdString;
-    // newUser = String.join("", userArray);
-    // }
-    // }
-    // return newUser;
-    // }
 
     Date date1 = new Date();
     // Date date2 = new Date();
