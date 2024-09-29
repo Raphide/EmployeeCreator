@@ -114,6 +114,19 @@ public class EmployeeServiceUnitTest {
     }
 
     @Test
+    public void userCreator_alreadyExistsAgain_success() {
+        Employee mockEmployee = new Employee();
+        String existingUser = "darjac";
+        String existingUser2 = "darjac1";
+        when(repo.existsByEmployeeUser(existingUser)).thenReturn(true);
+        when(repo.existsByEmployeeUser(existingUser2)).thenReturn(true);
+        mockEmployee.setFirstName("Daryl");
+        mockEmployee.setLastName("Jacobs");
+        String userName = service.userCreator(mockEmployee.getFirstName(), mockEmployee.getLastName());
+        assertEquals(userName, "darjac2");
+    }
+
+    @Test
     public void userCreator_twoCharName_success() {
         Employee mockEmployee = new Employee();
         mockEmployee.setFirstName("Da");
@@ -125,7 +138,7 @@ public class EmployeeServiceUnitTest {
     @Test
     public void userCreator_nonCharName_success() {
         Employee mockEmployee = new Employee();
-        mockEmployee.setFirstName("Sandy");
+        mockEmployee.setFirstName("Sa!ndy");
         mockEmployee.setLastName("O'Niel");
         String userName = service.userCreator(mockEmployee.getFirstName(), mockEmployee.getLastName());
         assertEquals(userName, "sanoni");

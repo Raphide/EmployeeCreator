@@ -11,13 +11,6 @@ import EditEmployeePage from "./pages/EditEmployeePage/EditEmployeePage";
 import TestPage from "./pages/TestPage/TestPage";
 
 function App() {
-  // const [employees, setEmployees] = useState<EmployeeResponse[]>([]);
-
-  // useEffect(() => {
-  //   getAllEmployees().then((data) => setEmployees(data)).catch((e) => console.log(e));
-  // },[]);
-
-  // console.log(employees);
 
   const queryClient = new QueryClient();
 
@@ -26,10 +19,10 @@ function App() {
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <NavBar />
-          {/* <div className="buffer"></div> */}
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/employees" element={<EmployeePage />} />
+            {/* <Route path="/employees/:pageNo/:term/:archivedStat" element={<EmployeePage />} /> */}
             <Route path="/employees/create" element={<CreateEmployeePage />} />
             <Route path="/employees/:id" element={<EmployeeInfoPage />} />
             <Route path="/employees/edit/:id" element={<EditEmployeePage />} />

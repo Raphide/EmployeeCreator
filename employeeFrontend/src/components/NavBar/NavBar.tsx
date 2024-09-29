@@ -9,6 +9,7 @@ const NavBar = () => {
       <nav>
         <NavLink className={styles.link} to="/">Home</NavLink>
         <NavLink className={styles.link} to="/employees">Employees</NavLink>
+        {/* <NavLink className={styles.link} to="/employees/:pageNo/:term/:archivedStat">Employees</NavLink> */}
         <NavLink className={styles.link} to="/employees/create">Enter a new employee</NavLink>
       </nav>
     </div>

@@ -50,6 +50,9 @@
 
 ## Change logs
 
+### 29/09/2024 - Testing implemented
+- Set search params to be tied to url params
+
 ### 27/09/2024 - Testing implemented
 - Fixed issue with switching from active to archived employees
 

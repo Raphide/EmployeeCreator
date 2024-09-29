@@ -96,7 +96,7 @@ export const getSearchedEmployees = async (
   return response.data;
 };
 
-export const getSearchedEmployeesByArchiveStatus = async ( page: number = 0, term: String = "", archived: boolean) => {
+export const getSearchedEmployeesByArchiveStatus = async ( page: number = 0, term: String = "", archived: boolean = false) => {
   const response = await axios.get<PagedResponse>(
     baseURL + `/employees/page=${page}/term=${term}/archived=${archived}`
   );
