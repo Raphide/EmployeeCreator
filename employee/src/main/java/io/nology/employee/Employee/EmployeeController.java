@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.nology.employee.common.exceptions.NotFoundException;
@@ -68,8 +69,8 @@ public class EmployeeController {
         return new ResponseEntity<Page<Employee>>(employees, HttpStatus.OK);
     }
 
-    @GetMapping("/page={page}/term={term}/archived={archived}")
-    public ResponseEntity<Page<Employee>> getPagedEmployeesByTermAndArchivedStatus(@PathVariable int page, @PathVariable String term, @PathVariable Boolean archived) throws NotFoundException{
+    @GetMapping("/search")
+    public ResponseEntity<Page<Employee>> getPagedEmployeesByTermAndArchivedStatus(@RequestParam int page, @RequestParam String term, @RequestParam Boolean archived) throws NotFoundException{
         Page<Employee> employees = this.employeeService.findByPageAndTermAndArchived(page, term, archived);
         if(employees.isEmpty()){
             throw new NotFoundException("No more results");

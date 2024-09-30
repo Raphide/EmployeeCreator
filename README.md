@@ -80,8 +80,6 @@
 - Changed the rendering of the employees on the EmployeePage to be within a table rather than as cards
 - Added individual employee profile pages
 
-
-
 ### 18/09/2024 - First Changelog
 
 -   Have written the first changelog of the project 

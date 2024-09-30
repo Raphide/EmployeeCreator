@@ -96,9 +96,9 @@ export const getSearchedEmployees = async (
   return response.data;
 };
 
-export const getSearchedEmployeesByArchiveStatus = async ( page: number = 0, term: String = "", archived: boolean = false) => {
+export const getSearchedEmployeesByArchiveStatus = async ( page: number = 0, term: String = "", archived: boolean) => {
   const response = await axios.get<PagedResponse>(
-    baseURL + `/employees/page=${page}/term=${term}/archived=${archived}`
+    baseURL + `/employees/search?term=${term}&page=${page}&archived=${archived}`
   );
   if(response.status === 404){
     throw new Error(`No results found under searched term ${term}`)

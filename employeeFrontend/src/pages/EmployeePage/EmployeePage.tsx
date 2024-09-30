@@ -8,6 +8,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import styles from "./EmployeePage.module.scss";
 import SearchBar from "../../components/SearchBar/SearchBar";
 
+
 const EmployeePage = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,7 +16,7 @@ const EmployeePage = () => {
     0 | (searchParams.get("pageNo") as unknown as number)
   );
   const [archived, setArchived] = useState<boolean>(
-    false || (searchParams.get("archivedStat") as unknown as boolean)
+     (searchParams.get("archivedStat") as unknown as boolean) || false
   );
   const [searchTerm, setSearchTerm] = useState<FormDataEntryValue | null>(
     "" || (searchParams.get("term") as string)
@@ -28,11 +29,6 @@ const EmployeePage = () => {
     setPage(0);
   };
 
-  useEffect(() => {
-    setPage(0);
-    setSearchTerm("");
-    setArchived(false);
-  }, []);
 
   useEffect(() => {
     setSearchParams((prevParams) => {
