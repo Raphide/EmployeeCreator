@@ -10,7 +10,9 @@ namespace CsharpEmployee.Employee {
 
         public async Task<EmployeeEntity> CreateEmployeeAsync(CreateEmployeeDto data){
             var employee = new EmployeeEntity{
-                Name = data.Name
+                FirstName = data.FirstName,
+                MiddleName = null ?? data.MiddleName,
+                LastName = data.LastName
             };
             return await _repo.AddEmployeeAsync(employee);
         }

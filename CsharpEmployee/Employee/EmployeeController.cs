@@ -5,14 +5,10 @@ namespace CsharpEmployee.Employee
 {
     [ApiController]
     [Route("/employees")]
-    public class EmployeeController : ControllerBase
+    public class EmployeeController(EmployeeService employeeService) : ControllerBase
     {
-        private readonly EmployeeService _employeeService;
+        private readonly EmployeeService _employeeService = employeeService;
 
-        public EmployeeController(EmployeeService employeeService)
-        {
-            _employeeService = employeeService;
-        }
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDto data)
         {
@@ -27,7 +23,7 @@ namespace CsharpEmployee.Employee
         [HttpGet]
         public async Task<IActionResult> GetAllEmployees(){
             var employeeList = await _employeeService.GetEmployees();
-            return StatusCode(200, employeeList);
+            return Ok(employeeList);
         }
     }
 }
