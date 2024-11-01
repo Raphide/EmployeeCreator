@@ -12,11 +12,28 @@ namespace CsharpEmployee.Employee.Entities
         [Required]
         [MaxLength(50)]
         public required string FirstName { get; set; }
-  
+
+        [MaybeNull]
         [MaxLength(50)]
         public string? MiddleName { get; set; }
         [Required]
         [MaxLength(50)]
         public required string LastName { get; set; }
+        [Required]
+        [MaxLength(10)]
+        public required string Gender { get; set; }
+
+        [MaybeNull]
+        public DateOnly? DateOfBirth { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        [EmailAddress]
+        public required string Email { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public required string Mobile { get; set; }
+
     }
 }
