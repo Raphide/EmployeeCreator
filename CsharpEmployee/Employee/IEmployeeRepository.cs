@@ -9,5 +9,6 @@ namespace CsharpEmployee.Employee
         Task<EmployeeEntity> GetByIdAsync(int id);
         Task<EmployeeEntity> UpdateEmployee(EmployeeEntity employee);
         Task DeleteEmployee(int id); 
+        bool ExistsByEmployeeUser(string newUser);
     }
 }

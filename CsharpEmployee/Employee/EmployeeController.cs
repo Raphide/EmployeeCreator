@@ -16,8 +16,21 @@ namespace CsharpEmployee.Employee
             {
                 return BadRequest(ModelState);
             }
-            var newEmployee = await _employeeService.CreateEmployeeAsync(data);
-            return StatusCode(201, newEmployee);
+
+            try
+            {
+                var newEmployee = await _employeeService.CreateEmployeeAsync(data);
+                return StatusCode(201, newEmployee);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                // Log the exception
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet]

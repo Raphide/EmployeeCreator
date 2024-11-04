@@ -35,5 +35,39 @@ namespace CsharpEmployee.Employee.Entities
         [MaxLength(20)]
         public required string Mobile { get; set; }
 
+        [Required]
+        [MaxLength(100)]
+        public required string Street { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public required string Suburb { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public required string State { get; set; }
+
+        [Required]
+        [MaxLength(4)]
+        public required string Postcode { get; set; }
+
+        [Required]
+        public bool IsPermanent { get; set; }
+
+        [Required]
+        public bool IsFullTime { get; set; }
+
+        [Required]
+        public DateOnly StartDate { get; set; }
+        public DateOnly? FinishDate { get; set; }
+
+        [Required]
+        public double WeeklyHours { get; set; }
+        public string? EmployeeUser { get; set; }
+
+        public string? EmployeeEmail { get; set; }
+
+        public bool? IsArchived {get; set;}
+
     }
 }
