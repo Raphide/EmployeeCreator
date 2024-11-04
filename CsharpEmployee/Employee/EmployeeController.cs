@@ -21,9 +21,54 @@ namespace CsharpEmployee.Employee
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllEmployees(){
+        public async Task<IActionResult> GetAllEmployees()
+        {
             var employeeList = await _employeeService.GetEmployees();
             return Ok(employeeList);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetEmployeeById([FromRoute] int id)
+        {
+            var foundEmployee = await _employeeService.FindEmployeeById(id);
+
+            if (foundEmployee == null)
+            {
+                return NotFound("Employee not found.");
+            }
+
+            return Ok(foundEmployee);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateEmployee([FromRoute] int id, [FromBody] UpdateEmployeeDto data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var updatedEmployee = await _employeeService.UpdateEmployee(id, data);
+            if (updatedEmployee == null)
+            {
+                return NotFound("Employee not found.");
+            }
+
+            return Ok(updatedEmployee);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEmployee([FromRoute] int id)
+        {
+            var success = await _employeeService.DeleteEmployeeAsync(id);
+            if (!success)
+            {
+                return NotFound("Employee not found.");
+            }
+
+            return NoContent();
+        }
     }
 }
+
+

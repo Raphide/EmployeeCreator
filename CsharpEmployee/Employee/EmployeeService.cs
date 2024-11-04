@@ -1,4 +1,6 @@
 using CsharpEmployee.Employee.DTOs;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using EmployeeEntity = CsharpEmployee.Employee.Entities.Employee;
 
 namespace CsharpEmployee.Employee
@@ -26,9 +28,45 @@ namespace CsharpEmployee.Employee
             return await _repo.AddEmployeeAsync(employee);
         }
 
-        internal async Task<IEnumerable<EmployeeEntity>> GetEmployees()
+        public async Task<EmployeeEntity> FindEmployeeById(int id)
+        {
+            return await _repo.GetByIdAsync(id);
+        }
+
+        public async Task<IEnumerable<EmployeeEntity>> GetEmployees()
         {
             return await _repo.GetEmployeesAsync();
+        }
+
+        public async Task<EmployeeEntity> UpdateEmployee(int id, UpdateEmployeeDto data)
+        {
+            var existingEmployee = await _repo.GetByIdAsync(id);
+            if (existingEmployee == null)
+            {
+                return null;
+            }
+
+            existingEmployee.FirstName = data.FirstName;
+            existingEmployee.MiddleName = data.MiddleName;
+            existingEmployee.LastName = data.LastName;
+            existingEmployee.Gender = data.Gender;
+            existingEmployee.DateOfBirth = data.DateOfBirth;
+            existingEmployee.Email = data.Email;
+            existingEmployee.Mobile = data.Mobile;
+
+            return await _repo.UpdateEmployee(existingEmployee);
+        }
+
+        public async Task<bool> DeleteEmployeeAsync(int id)
+        {
+            var existingEmployee = await _repo.GetByIdAsync(id);
+            if (existingEmployee == null)
+            {
+                return false;
+            }
+
+            await _repo.DeleteEmployee(id);
+            return true;
         }
     }
 }
