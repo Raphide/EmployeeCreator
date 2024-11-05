@@ -1,0 +1,6 @@
+@CsharpEmployee_HostAddress = http://localhost:5242
+
+GET {{CsharpEmployee_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

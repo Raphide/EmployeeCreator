@@ -88,15 +88,47 @@ namespace CsharpEmployee.Employee
             }
         }
 
-        public async Task<EmployeeEntity> FindEmployeeById(int id)
+        // public async Task<EmployeeEntity> FindEmployeeById(int id)
+        // {
+        //     return await _repo.GetByIdAsync(id);
+        // }
+
+        // public async Task<IEnumerable<EmployeeEntity>> GetEmployees()
+        // {
+        //     return await _repo.GetEmployeesAsync();
+        // }
+
+        public async Task<IEnumerable<EmployeeEntity>> FindAllAsync()
+        {
+            return await _repo.GetAllAsync();
+        }
+
+        public async Task<PagedResult<EmployeeEntity>> FindByPageAsync(int page, int pageSize)
+        {
+            return await _repo.GetPageAsync(page, pageSize);
+        }
+
+        public async Task<IEnumerable<EmployeeEntity>> FindByTermAsync(string term)
+        {
+            return await _repo.SearchByTermAsync(term);
+        }
+
+        public async Task<IEnumerable<EmployeeEntity>> FindByPageAndTermAsync(int page, string term, int pageSize)
+        {
+            return await _repo.GetPageByTermAsync(page, term, pageSize);
+        }
+
+public async Task<PagedResult<EmployeeEntity>> FindByPageAndTermAndArchivedAsync(
+    int pageNumber, int pageSize, string term, bool archived)
+{
+    return await _repo.GetEmployeesPagedFilteredAsync(pageNumber, pageSize, term, archived);
+}
+
+        public async Task<EmployeeEntity> FindByIdAsync(long id)
         {
             return await _repo.GetByIdAsync(id);
         }
 
-        public async Task<IEnumerable<EmployeeEntity>> GetEmployees()
-        {
-            return await _repo.GetEmployeesAsync();
-        }
 
         public async Task<EmployeeEntity> UpdateEmployee(int id, UpdateEmployeeDto data)
         {
@@ -117,6 +149,12 @@ namespace CsharpEmployee.Employee
             existingEmployee.Suburb = data.Suburb;
             existingEmployee.State = data.State;
             existingEmployee.Postcode = data.Postcode;
+            existingEmployee.IsPermanent = data.IsPermanent;
+            existingEmployee.IsFullTime = data.IsFullTime;
+            existingEmployee.StartDate = data.StartDate;
+            existingEmployee.FinishDate = data.FinishDate;
+            existingEmployee.WeeklyHours = data.WeeklyHours;
+            existingEmployee.IsArchived = data.IsArchived;
 
             return await _repo.UpdateEmployee(existingEmployee);
         }

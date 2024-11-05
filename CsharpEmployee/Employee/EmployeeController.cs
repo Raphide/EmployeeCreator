@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CsharpEmployee.Employee.DTOs;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace CsharpEmployee.Employee
 {
@@ -33,25 +35,87 @@ namespace CsharpEmployee.Employee
             }
         }
 
+        // [HttpGet]
+        // public async Task<IActionResult> GetAllEmployees()
+        // {
+        //     var employeeList = await _employeeService.GetEmployees();
+        //     return Ok(employeeList);
+        // }
+
+        // [HttpGet("{id}")]
+        // public async Task<IActionResult> GetEmployeeById([FromRoute] int id)
+        // {
+        //     var foundEmployee = await _employeeService.FindEmployeeById(id);
+
+        //     if (foundEmployee == null)
+        //     {
+        //         return NotFound("Employee not found.");
+        //     }
+
+        //     return Ok(foundEmployee);
+        // }
+
         [HttpGet]
         public async Task<IActionResult> GetAllEmployees()
         {
-            var employeeList = await _employeeService.GetEmployees();
-            return Ok(employeeList);
+            var employees = await _employeeService.FindAllAsync();
+            return Ok(employees);
+        }
+
+        [HttpGet("term={term}")]
+        public async Task<IActionResult> GetEmployeesByTerm([FromRoute] string term)
+        {
+            var employees = await _employeeService.FindByTermAsync(term);
+            if (!employees.Any())
+            {
+                return NotFound("No results found");
+            }
+            return Ok(employees);
+        }
+
+        [HttpGet("go")]
+        public async Task<IActionResult> GetPagedEmployees([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            var employees = await _employeeService.FindByPageAsync(page, pageSize);
+            return Ok(employees);
+        }
+
+        [HttpGet("page={page}/term={term}")]
+        public async Task<IActionResult> GetPagedEmployeesByTerm([FromRoute] int page, [FromRoute] string term)
+        {
+            var employees = await _employeeService.FindByPageAndTermAsync(page, term, 10);
+            if (!employees.Any())
+            {
+                return NotFound("No more results");
+            }
+            return Ok(employees);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> GetPagedEmployeesByTermAndArchivedStatus(
+           [FromQuery] int pageNumber = 1,
+           [FromQuery] string term = "",
+           [FromQuery] bool archived = false)
+        {
+            var pagedResult = await _employeeService.FindByPageAndTermAndArchivedAsync(pageNumber, 10, term, archived);
+            if (pagedResult.Content.Count == 0)
+            {
+                return NotFound("No results found");
+            }
+            return Ok(pagedResult);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEmployeeById([FromRoute] int id)
+        public async Task<IActionResult> GetEmployeeById([FromRoute] long id)
         {
-            var foundEmployee = await _employeeService.FindEmployeeById(id);
-
-            if (foundEmployee == null)
+            var employee = await _employeeService.FindByIdAsync(id);
+            if (employee == null)
             {
-                return NotFound("Employee not found.");
+                return NotFound($"Could not find employee with id {id}");
             }
-
-            return Ok(foundEmployee);
+            return Ok(employee);
         }
+
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateEmployee([FromRoute] int id, [FromBody] UpdateEmployeeDto data)

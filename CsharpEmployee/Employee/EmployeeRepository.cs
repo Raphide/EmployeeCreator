@@ -18,15 +18,86 @@ namespace CsharpEmployee.Employee
             return employee;
         }
 
-        public async Task<IEnumerable<EmployeeEntity>> GetEmployeesAsync()
+        // public async Task<IEnumerable<EmployeeEntity>> GetEmployeesAsync()
+        // {
+        //     return await _context.Employees.ToListAsync();
+        // }
+
+        // public async Task<EmployeeEntity> GetByIdAsync(int id)
+        // {
+        //     return await _context.Employees.FindAsync(id);
+        // }
+
+        public async Task<IEnumerable<EmployeeEntity>> GetAllAsync()
         {
             return await _context.Employees.ToListAsync();
         }
 
-        public async Task<EmployeeEntity> GetByIdAsync(int id)
+        public async Task<PagedResult<EmployeeEntity>> GetPageAsync(int page, int pageSize)
+        {
+            var totalCount = await _context.Employees.CountAsync();
+            var items = await _context.Employees
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<EmployeeEntity>(items, totalCount, page, pageSize);
+        }
+
+        public async Task<IEnumerable<EmployeeEntity>> SearchByTermAsync(string term)
+        {
+            return await _context.Employees
+                .Where(e => EF.Functions.Like(e.FirstName, $"%{term}%")
+                            || EF.Functions.Like(e.MiddleName, $"%{term}%")
+                            || EF.Functions.Like(e.LastName, $"%{term}%"))
+                .OrderBy(e => e.LastName)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<EmployeeEntity>> GetPageByTermAsync(int page, string term, int pageSize)
+        {
+            return await _context.Employees
+                .Where(e => EF.Functions.Like(e.FirstName, $"%{term}%")
+                            || EF.Functions.Like(e.MiddleName, $"%{term}%")
+                            || EF.Functions.Like(e.LastName, $"%{term}%"))
+                .OrderBy(e => e.LastName)
+                .Skip(page * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<PagedResult<EmployeeEntity>> GetEmployeesPagedFilteredAsync(
+    int pageNumber, int pageSize, string term, bool archived)
+        {
+            var query = _context.Employees.AsQueryable();
+
+            // Apply filters
+            if (!string.IsNullOrEmpty(term))
+            {
+                query = query.Where(e =>
+                    e.FirstName.Contains(term) ||
+                    e.LastName.Contains(term) ||
+                    e.Email.Contains(term));
+            }
+
+            query = query.Where(e => e.IsArchived == archived);
+
+            // Get total count
+            var totalCount = await query.CountAsync();
+
+            // Apply pagination
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<EmployeeEntity>(items, totalCount, pageNumber, pageSize);
+        }
+        public async Task<EmployeeEntity> GetByIdAsync(long id)
         {
             return await _context.Employees.FindAsync(id);
         }
+
 
         public async Task<EmployeeEntity> UpdateEmployee(EmployeeEntity employee)
         {

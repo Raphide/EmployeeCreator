@@ -48,5 +48,21 @@ namespace CsharpEmployee.Employee.DTOs
         [RegularExpression(@"^\d+$", ErrorMessage = "Postcode must contain only digits")]
         public required string Postcode {get; set;}
 
+                [Required(ErrorMessage = "Must specify if Employee is permanent")]
+        public required bool IsPermanent { get; set; }
+
+        [Required(ErrorMessage = "Must specify if Employee is Full Time")]
+        public required bool IsFullTime { get; set; }
+
+        [Required(ErrorMessage = "Must fill in Starting Date")]
+        public required DateOnly StartDate { get; set; }
+
+        public DateOnly? FinishDate { get; set; }
+
+        [Required(ErrorMessage = "Weekly Hours are required")]
+        public required double WeeklyHours { get; set; }
+
+        public bool IsArchived {get; set;}
+
     }
 }

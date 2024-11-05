@@ -50,6 +50,12 @@
 
 ## Change logs
 
+### 05/11/2024 - Replacing Java backend with C#
+Forgot To update this Readme but I've been working on rewriting my back end in C#. Not gonna lie, I've had a rocky start with it (mainly due to some tech issues), but I've almost got it done.
+- I've implemented a wrapper for my returned values to mimic how Pageable functions in Java.
+    - This will hopefully make it so my new DB data is structured exactly like the data from my Java back end. If they're structured the same then that means I won't have to make any changes to the front end.
+        - I will experiment soon with having the two back ends connected to the same database as well. 
+
 ### 29/09/2024 - Testing implemented
 - Set search params to be tied to url params
 
