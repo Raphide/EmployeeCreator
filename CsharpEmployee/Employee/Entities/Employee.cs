@@ -8,7 +8,7 @@ namespace CsharpEmployee.Employee.Entities
     public class Employee
     {
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Required]
         [MaxLength(50)]
         public required string FirstName { get; set; }

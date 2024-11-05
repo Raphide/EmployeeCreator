@@ -97,7 +97,7 @@ namespace CsharpEmployee.Employee
 
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateEmployee([FromRoute] int id, [FromBody] UpdateEmployeeDto data)
+        public async Task<IActionResult> UpdateEmployee([FromRoute] long id, [FromBody] UpdateEmployeeDto data)
         {
             if (!ModelState.IsValid)
             {
@@ -114,7 +114,7 @@ namespace CsharpEmployee.Employee
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEmployee([FromRoute] int id)
+        public async Task<IActionResult> DeleteEmployee([FromRoute] long id)
         {
             var success = await _employeeService.DeleteEmployeeAsync(id);
             if (!success)

@@ -107,7 +107,7 @@ const EmployeePage = () => {
         <tbody>
           {isError && (
             <tr>
-              <td>No results for {"searched term" || searchTerm}</td>
+              <td>No results for {searchTerm}</td>
             </tr>
           )}
           {isPending ||

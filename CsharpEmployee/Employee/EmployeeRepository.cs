@@ -82,10 +82,8 @@ namespace CsharpEmployee.Employee
 
             query = query.Where(e => e.IsArchived == archived);
 
-            // Get total count
             var totalCount = await query.CountAsync();
 
-            // Apply pagination
             var items = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -97,7 +95,6 @@ namespace CsharpEmployee.Employee
         {
             return await _context.Employees.FindAsync(id);
         }
-
 
         public async Task<EmployeeEntity> UpdateEmployee(EmployeeEntity employee)
         {
@@ -126,7 +123,7 @@ namespace CsharpEmployee.Employee
         //     return null;
         // }
 
-        public async Task DeleteEmployee(int id)
+        public async Task DeleteEmployee(long id)
         {
             var existingEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
             if (existingEmployee != null)

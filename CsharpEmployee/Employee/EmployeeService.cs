@@ -123,7 +123,7 @@ public async Task<PagedResult<EmployeeEntity>> FindByPageAndTermAndArchivedAsync
         }
 
 
-        public async Task<EmployeeEntity> UpdateEmployee(int id, UpdateEmployeeDto data)
+        public async Task<EmployeeEntity> UpdateEmployee(long id, UpdateEmployeeDto data)
         {
             var existingEmployee = await _repo.GetByIdAsync(id);
             if (existingEmployee == null)
@@ -152,7 +152,7 @@ public async Task<PagedResult<EmployeeEntity>> FindByPageAndTermAndArchivedAsync
             return await _repo.UpdateEmployee(existingEmployee);
         }
 
-        public async Task<bool> DeleteEmployeeAsync(int id)
+        public async Task<bool> DeleteEmployeeAsync(long id)
         {
             var existingEmployee = await _repo.GetByIdAsync(id);
             if (existingEmployee == null)
