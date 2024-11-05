@@ -21,7 +21,7 @@ namespace CsharpEmployee.Employee.DTOs
         public required string Gender { get; set; }
 
         [MaybeNull]
-        public DateOnly? DateOfBirth { get; set; }
+        public DateOnly? BirthDate { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email address")]

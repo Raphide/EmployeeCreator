@@ -24,7 +24,7 @@ namespace CsharpEmployee.Employee.Entities
         public required string Gender { get; set; }
 
         [MaybeNull]
-        public DateOnly? DateOfBirth { get; set; }
+        public DateOnly? BirthDate { get; set; }
 
         [Required]
         [MaxLength(100)]

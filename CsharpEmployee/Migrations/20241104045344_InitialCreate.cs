@@ -29,7 +29,7 @@ namespace CsharpEmployee.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Gender = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: true),
                     Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Mobile = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)

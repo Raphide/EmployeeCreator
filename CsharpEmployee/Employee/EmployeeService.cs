@@ -21,30 +21,24 @@ namespace CsharpEmployee.Employee
 
         public string UserCreator(string firstName, string lastName)
         {
-            // Determine the length of the first and last name segments
             int fnLength = firstName.Length >= 3 ? 3 : 2;
             int lnLength = lastName.Length >= 3 ? 3 : 2;
 
-            // Create the base username
             string newUser = MyRegex().Replace(firstName, "").Substring(0, fnLength).ToLower()
                             + MyRegex().Replace(lastName, "").Substring(0, lnLength).ToLower();
 
-            // Check if the username exists and generate a new one if needed
             if (_repo.ExistsByEmployeeUser(newUser))
             {
                 int number = 1;
                 newUser = $"{newUser}{number}";
 
-                // Continue incrementing the number until a unique username is found
                 while (_repo.ExistsByEmployeeUser(newUser))
                 {
-                    // Split the username to extract the numeric part
                     string[] userArray = MyRegex1().Split(newUser);
                     int idInt = int.Parse(userArray[1]);
                     idInt++;
                     userArray[1] = idInt.ToString();
 
-                    // Reconstruct the username
                     newUser = string.Join("", userArray);
                 }
             }
@@ -60,7 +54,7 @@ namespace CsharpEmployee.Employee
                 MiddleName = data.MiddleName,
                 LastName = data.LastName,
                 Gender = data.Gender,
-                DateOfBirth = data.DateOfBirth,
+                BirthDate = data.BirthDate,
                 Email = data.Email,
                 Mobile = data.Mobile,
                 Street = data.Street,
@@ -82,7 +76,6 @@ namespace CsharpEmployee.Employee
             }
             catch (Exception ex)
             {
-                // Log the exception
                 Console.WriteLine($"Error creating employee: {ex.Message}");
                 throw;
             }
@@ -142,7 +135,7 @@ public async Task<PagedResult<EmployeeEntity>> FindByPageAndTermAndArchivedAsync
             existingEmployee.MiddleName = data.MiddleName;
             existingEmployee.LastName = data.LastName;
             existingEmployee.Gender = data.Gender;
-            existingEmployee.DateOfBirth = data.DateOfBirth;
+            existingEmployee.BirthDate = data.BirthDate;
             existingEmployee.Email = data.Email;
             existingEmployee.Mobile = data.Mobile;
             existingEmployee.Street = data.Street;

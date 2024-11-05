@@ -30,30 +30,9 @@ namespace CsharpEmployee.Employee
             }
             catch (Exception)
             {
-                // Log the exception
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }
-
-        // [HttpGet]
-        // public async Task<IActionResult> GetAllEmployees()
-        // {
-        //     var employeeList = await _employeeService.GetEmployees();
-        //     return Ok(employeeList);
-        // }
-
-        // [HttpGet("{id}")]
-        // public async Task<IActionResult> GetEmployeeById([FromRoute] int id)
-        // {
-        //     var foundEmployee = await _employeeService.FindEmployeeById(id);
-
-        //     if (foundEmployee == null)
-        //     {
-        //         return NotFound("Employee not found.");
-        //     }
-
-        //     return Ok(foundEmployee);
-        // }
 
         [HttpGet]
         public async Task<IActionResult> GetAllEmployees()
@@ -93,11 +72,11 @@ namespace CsharpEmployee.Employee
 
         [HttpGet("search")]
         public async Task<IActionResult> GetPagedEmployeesByTermAndArchivedStatus(
-           [FromQuery] int pageNumber = 1,
+           [FromQuery] int page = 1,
            [FromQuery] string term = "",
            [FromQuery] bool archived = false)
         {
-            var pagedResult = await _employeeService.FindByPageAndTermAndArchivedAsync(pageNumber, 10, term, archived);
+            var pagedResult = await _employeeService.FindByPageAndTermAndArchivedAsync(page, 10, term, archived);
             if (pagedResult.Content.Count == 0)
             {
                 return NotFound("No results found");
