@@ -76,7 +76,7 @@ namespace CsharpEmployee.Employee
            [FromQuery] string term = "",
            [FromQuery] bool archived = false)
         {
-            var pagedResult = await _employeeService.FindByPageAndTermAndArchivedAsync(page, 10, term, archived);
+            var pagedResult = await _employeeService.FindByPageAndTermAndArchivedAsync(page + 1, 10, term, archived);
             if (pagedResult.Content.Count == 0)
             {
                 return NotFound("No results found");

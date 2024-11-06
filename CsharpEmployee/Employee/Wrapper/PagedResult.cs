@@ -38,7 +38,7 @@ public class PagedResult<T>
         Number = pageNumber - 1;
         TotalPages = (int)Math.Ceiling(count / (double)pageSize);
         NumberOfElements = items.Count;
-        First = pageNumber == 1;
+        First = pageNumber == 0;
         Last = pageNumber == TotalPages;
         Empty = !items.Any();
 

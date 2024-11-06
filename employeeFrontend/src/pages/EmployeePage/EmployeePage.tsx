@@ -32,7 +32,7 @@ const EmployeePage = () => {
 
   useEffect(() => {
     setSearchParams((prevParams) => {
-      prevParams.set("term", searchTerm as string);
+      prevParams.set("term", (searchTerm === null ? "" : searchTerm as string));
       prevParams.set("pageNo", page as unknown as string);
       prevParams.set("archivedStat", archived as unknown as string);
       return prevParams;
