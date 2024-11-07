@@ -77,10 +77,12 @@ namespace CsharpEmployee.Employee
                 query = query.Where(e =>
                     e.FirstName.Contains(term) ||
                     e.LastName.Contains(term) ||
-                    e.Email.Contains(term));
+                    e.EmployeeUser.Contains(term));
             }
 
             query = query.Where(e => e.IsArchived == archived);
+
+            query = query.OrderBy(e => e.LastName);
 
             var totalCount = await query.CountAsync();
 
@@ -102,6 +104,7 @@ namespace CsharpEmployee.Employee
             await _context.SaveChangesAsync();
             return employee;
         }
+
 
         // public async Task<EmployeeEntity> UpdateEmployee(EmployeeEntity employee)
         // {

@@ -9,6 +9,7 @@ import NavBar from "./components/NavBar/NavBar";
 import EmployeeInfoPage from "./pages/EmployeeInfoPage/EmployeeInfoPage";
 import EditEmployeePage from "./pages/EditEmployeePage/EditEmployeePage";
 import TestPage from "./pages/TestPage/TestPage";
+import DataPage from "./pages/DataPage/DataPage";
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/employees/:id" element={<EmployeeInfoPage />} />
             <Route path="/employees/edit/:id" element={<EditEmployeePage />} />
             <Route path="/test" element={<TestPage/>}/>
+            <Route path="/data" element={<DataPage/>}/>
           </Routes>
         </QueryClientProvider>
       </BrowserRouter>

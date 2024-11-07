@@ -14,6 +14,7 @@ namespace CsharpEmployee.Employee
         Task<PagedResult<EmployeeEntity>> GetEmployeesPagedFilteredAsync(
         int pageNumber, int pageSize, string term, bool archived);        Task<EmployeeEntity> GetByIdAsync(long id);
         Task<EmployeeEntity> UpdateEmployee(EmployeeEntity employee);
+        // Task<EmployeeEntity> ArchiveByIdAsync(long id);
         Task DeleteEmployee(long id);
         bool ExistsByEmployeeUser(string newUser);
     }

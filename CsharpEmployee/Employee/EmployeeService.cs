@@ -111,11 +111,11 @@ namespace CsharpEmployee.Employee
             return await _repo.GetPageByTermAsync(page, term, pageSize);
         }
 
-public async Task<PagedResult<EmployeeEntity>> FindByPageAndTermAndArchivedAsync(
-    int pageNumber, int pageSize, string term, bool archived)
-{
-    return await _repo.GetEmployeesPagedFilteredAsync(pageNumber, pageSize, term, archived);
-}
+        public async Task<PagedResult<EmployeeEntity>> FindByPageAndTermAndArchivedAsync(
+            int pageNumber, int pageSize, string term, bool archived)
+        {
+            return await _repo.GetEmployeesPagedFilteredAsync(pageNumber, pageSize, term, archived);
+        }
 
         public async Task<EmployeeEntity> FindByIdAsync(long id)
         {
@@ -151,6 +151,22 @@ public async Task<PagedResult<EmployeeEntity>> FindByPageAndTermAndArchivedAsync
 
             return await _repo.UpdateEmployee(existingEmployee);
         }
+
+        public async Task<EmployeeEntity> ArchiveById(long id)
+        {
+            var existingEmployee = await _repo.GetByIdAsync(id);
+            if (existingEmployee == null)
+            {
+                return null;
+            }
+
+            existingEmployee.IsArchived = !existingEmployee.IsArchived;
+
+            return await _repo.UpdateEmployee(existingEmployee);
+        }
+
+
+
 
         public async Task<bool> DeleteEmployeeAsync(long id)
         {

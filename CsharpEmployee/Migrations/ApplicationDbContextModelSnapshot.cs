@@ -24,11 +24,11 @@ namespace CsharpEmployee.Migrations
 
             modelBuilder.Entity("CsharpEmployee.Employee.Entities.Employee", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateOnly?>("BirthDate")
                         .HasColumnType("date");

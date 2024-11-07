@@ -60,7 +60,7 @@ public class PageableInfo
 {
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
-    public SortInfo Sort { get; set; }
+    public required SortInfo Sort { get; set; }
     public int Offset { get; set; }
     public bool Paged { get; set; }
     public bool Unpaged { get; set; }

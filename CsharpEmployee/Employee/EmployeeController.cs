@@ -76,7 +76,7 @@ namespace CsharpEmployee.Employee
            [FromQuery] string term = "",
            [FromQuery] bool archived = false)
         {
-            var pagedResult = await _employeeService.FindByPageAndTermAndArchivedAsync(page + 1, 10, term, archived);
+            var pagedResult = await _employeeService.FindByPageAndTermAndArchivedAsync(page + 1, 10, term, archived); // page + 1 to fix offset issue on front end. Has to be done on back end so Java version still works with front end. 
             if (pagedResult.Content.Count == 0)
             {
                 return NotFound("No results found");
@@ -105,6 +105,22 @@ namespace CsharpEmployee.Employee
             }
 
             var updatedEmployee = await _employeeService.UpdateEmployee(id, data);
+            if (updatedEmployee == null)
+            {
+                return NotFound("Employee not found.");
+            }
+
+            return Ok(updatedEmployee);
+        }
+
+        [HttpPatch("archive/{id}")]
+        public async Task<IActionResult> ArchiveEmployee([FromRoute] long id){
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var updatedEmployee = await _employeeService.ArchiveById(id);
             if (updatedEmployee == null)
             {
                 return NotFound("Employee not found.");
