@@ -1,69 +1,131 @@
-import {
-  Chart as ChartJs,
-  CategoryScale,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-} from "chart.js";
-import React, { useState } from "react";
-import { ExchangeResponse, getAllRates } from "../../services/CurrencyServices";
+import React from "react";
+import { Bar, Pie } from "react-chartjs-2";
 import { useQuery } from "@tanstack/react-query";
-import { Line } from "react-chartjs-2";
-
-ChartJs.register(
+import {
+  getAllEmployees,
+  EmployeeResponse,
+} from "../../services/EmployeeServices";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  BarElement,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
-  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import styles from "./DataVisualizer.module.scss";
+
+ChartJS.register(
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  LinearScale,
   Tooltip,
   Legend
 );
 
 const DataVisualizer = () => {
-
-
-  const { data: rates, isLoading, isError, error } = useQuery({
-    queryKey: ["exchangeRates"],
-    queryFn: getAllRates,
+  const {
+    data: employees,
+    isLoading,
+    error,
+  } = useQuery<EmployeeResponse[]>({
+    queryKey: ["employees"],
+    queryFn: getAllEmployees,
   });
 
   if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error: {(error as Error).message}</div>;
+  if (error) return <div>Error loading data</div>;
 
-  const chartData = {
-    labels: Object.keys(rates || {}),
+  const employeeCountByState =
+    employees?.reduce((acc, employee) => {
+      acc[employee.state] = (acc[employee.state] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>) || {};
+
+  const fullTimeCount =
+    employees?.filter((employee) => employee.isFullTime).length || 0;
+  const partTimeCount = (employees?.length || 0) - fullTimeCount;
+
+  const maleCount =
+    employees?.filter((employee) => employee.gender === "male").length || 0;
+  const femaleCount =
+    employees?.filter((employee) => employee.gender === "female").length || 0;
+  const nonbinaryCount =
+    employees?.filter((employee) => employee.gender === "nonbinary").length ||
+    0;
+
+  console.log(`${maleCount}, ${femaleCount}, ${nonbinaryCount}`);
+  const barChartData = {
+    labels: Object.keys(employeeCountByState),
     datasets: [
       {
-        label: "Exchange Rates (USD)",
-        data: Object.values(rates || {}),
-        fill: false,
-        backgroundColor: "rgb(75, 192, 192)",
-        borderColor: "rgba(75, 192, 192, 0.2)",
+        label: "Employee Count by State",
+        data: Object.values(employeeCountByState),
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
       },
     ],
   };
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
+  const timePieChartData = {
+    labels: ["Full-Time", "Part-Time"],
+    datasets: [
+      {
+        label: "Count",
+        data: [fullTimeCount, partTimeCount],
+        backgroundColor: ["#4bc0c0", "#95cccc"],
       },
-      title: {
-        display: true,
-        text: "Currency Exchange Rates",
-      },
-    },
+    ],
   };
 
+  const genderPieChartData = {
+    labels: ["Male", "Female", "NonBinary"],
+    datasets: [
+      {
+        label: "Count",
+        data: [maleCount, femaleCount, nonbinaryCount],
+        backgroundColor: ["#36A2EB", "#FF6384", "#32a852"],
+      },
+    ],
+  };
+
+  // console.log(employeeCountByState)
+
   return (
-    <div>
-      <h2>Currency Exchange Rates</h2>
-      <Line data={chartData} options={options} />
+    <div className={styles.base}>
+      <div>
+        <h3>Employee Count by State</h3>
+        <Bar
+          data={barChartData}
+          options={{
+            responsive: true,
+            plugins: { legend: { position: "top" } },
+          }}
+        />
+      </div>
+      <div>
+        <h3>Employment Type Distribution</h3>
+        <Pie
+          data={timePieChartData}
+          options={{
+            responsive: true,
+            plugins: { legend: { position: "top" } },
+          }}
+        />
+      </div>
+      <div>
+        <h3>Gender Distribution</h3>
+        <Pie
+          data={genderPieChartData}
+          options={{
+            responsive: true,
+            plugins: { legend: { position: "top" } },
+          }}
+        />
+      </div>
     </div>
   );
 };
